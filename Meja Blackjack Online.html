@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meja Blackjack Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,700&family=Karla:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--felt:#21604a;--wood:#3a2a20;--woodline:#241912;--brass:#dcb45f;--ink:#f3f4ee;--soft:rgba(243,244,238,.62);--line:rgba(243,244,238,.5);--btn:#f3f4ee;--btnink:#17372b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--felt:#153d30;color-scheme:dark}}
+:root[data-theme="dark"]{--felt:#153d30;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background-color:var(--felt);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");color:var(--ink);font:16px/1.45 Karla,system-ui,sans-serif;min-height:100vh;padding:20px 18px 240px;max-width:720px;margin:0 auto}
+h1{font:700 38px/1 "Bodoni Moda",Georgia,serif;margin:6px 0 8px}
+h2{font:500 20px/1.2 "Bodoni Moda",Georgia,serif;margin:26px 0 8px}
+p{margin:0 0 10px;color:var(--soft);max-width:60ch}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.go{background:var(--btn);color:var(--btnink);border:0;border-radius:4px;padding:13px 18px;font-weight:700;width:100%;margin-bottom:10px}
+.go:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:4px;padding:9px 12px}
+.ghost.on{background:var(--ink);color:var(--btnink);border-color:var(--ink);font-weight:700}
+.link{background:none;border:0;padding:6px 0;text-decoration:underline;color:var(--soft)}
+.tray{background:var(--wood);border-bottom:3px solid var(--woodline);border-radius:6px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.tray small{display:block;color:var(--soft)}
+.amt{font:700 30px/1 "Bodoni Moda",Georgia,serif;color:var(--brass);font-variant-numeric:lining-nums tabular-nums}
+.code{font:700 34px/1 "Bodoni Moda",Georgia,serif;letter-spacing:.14em;color:var(--ink)}
+.status{padding:10px 14px;border:1px solid var(--line);border-radius:4px;margin:12px 0;color:var(--ink)}
+.err{color:#ffb3a8;margin:8px 0}
+.up{color:#9be7b9}.dn{color:#ffb3a8}
+.spot{width:132px;height:132px;border-radius:50%;border:2px solid var(--brass);margin:18px auto 8px;display:flex;align-items:flex-end;justify-content:center;gap:3px;padding:0 0 36px;color:var(--soft);font-size:13px;text-align:center;box-shadow:0 0 0 4px rgba(220,180,95,.25)}
+.spot .hint{align-self:center;padding:0 16px}
+.name{font:500 21px/1.2 "Bodoni Moda",Georgia,serif;word-break:break-word}
+.bal{color:var(--soft);font-size:15px;font-variant-numeric:tabular-nums}.bal b{color:var(--ink)}
+.center{text-align:center}
+.row{display:grid;grid-template-columns:96px 1fr;gap:6px 14px;align-items:center;padding:12px 0;border-top:1px solid rgba(243,244,238,.18)}
+.row .spot{width:84px;height:84px;margin:0;padding-bottom:18px;border-width:1px;box-shadow:none;border-color:var(--line)}
+.row .seg{grid-column:1/-1}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.chip{--s:44px;--c:#b3362d;--e:#f3f4ee;--tx:#fff;--ln:rgba(255,255,255,.7);position:relative;width:var(--s);height:var(--s);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:0;padding:0;font-style:normal;font-weight:700;font-size:calc(var(--s)*.3);color:var(--tx);background:radial-gradient(circle,var(--c) 0 56%,transparent 57%),repeating-conic-gradient(var(--e) 0 15deg,var(--c) 15deg 30deg);box-shadow:0 1px 1px rgba(0,0,0,.5)}
+.chip::after{content:"";position:absolute;inset:17%;border-radius:50%;border:1.5px dashed var(--ln);pointer-events:none}
+.chip.d10{--c:#ebe8dc;--e:#7a7a72;--tx:#1d2b24;--ln:rgba(0,0,0,.35)}
+.chip.d50{--c:#b3362d}.chip.d100{--c:#25437d}.chip.d500{--c:#2b2b30}
+button.chip{--s:54px}
+.pile{position:relative;width:30px;height:var(--h)}
+.pile .chip{--s:30px;position:absolute;left:0;bottom:calc(var(--i)*4px)}
+.row .pile,.row .pile .chip{--s:26px;width:26px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--wood);border-top:3px solid var(--woodline);padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar>div{max-width:720px;margin:0 auto}
+.rack{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
+.rack .sp{flex:1}
+label{display:block;color:var(--soft);font-size:14px;margin-bottom:4px}
+select,input{font:inherit;color:var(--ink);background:rgba(0,0,0,.22);border:0;border-bottom:2px solid var(--line);border-radius:4px 4px 0 0;padding:10px 12px;width:100%}
+select option{color:#111}
+input.codein{font:700 28px "Bodoni Moda",Georgia,serif;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0}
+</style></head><body>
+<div id="app"><p>Menghubungkan ke meja...</p></div>
+<script>
+var D=null,U=null,me='',R={role:'',code:'',name:''},mode='home',room=null,seats={},results={},unsubs=[],draft=0,lastRound=-1,picks={},err='',busy=false,ready=false,startC=1000,dealerC=10000,SI=[];
+var KEYS=['win','bj','push','lose'],LBL=['Menang','Blackjack','Seri','Kalah'],OUT={win:'Menang',bj:'Blackjack',push:'Seri',lose:'Kalah'};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}return null}
+function rid(){return 'g'+Math.random().toString(36).slice(2,10)}
+function dl(b,o){return o==='win'?b:o==='bj'?Math.floor(b*1.5):o==='lose'?-b:0}
+function fail(e){err='Koneksi bermasalah: '+((e&&e.message)||'coba muat ulang halaman');render()}
+function base(){return 'rooms/'+R.code}
+function chipsOf(id){return results[id]?results[id].chips:(room?room.startChips:0)}
+function piles(b){var h='';[500,100,50,10].forEach(function(d){var n=Math.floor(b/d);b-=n*d;if(n){var m=Math.min(n,8),c='';for(var k=0;k<m;k++)c+='<i class="chip d'+d+'" style="--i:'+k+'"></i>';h+='<div class="pile" style="--h:'+(30+(m-1)*4)+'px">'+c+'</div>'}});return h}
+function opts(a,c){return a.map(function(v){return '<option'+(v===c?' selected':'')+'>'+v+'</option>'}).join('')}
+async function init(){
+  try{D=await claude.use('db');U=await claude.use('user')}catch(e){}
+  try{if(U)me=await U.id()}catch(e){}
+  if(!me){me=ls('bj_me')||rid();ls('bj_me',me)}
+  var s=ls('bj_sess');
+  if(s&&D){try{R=JSON.parse(s);if(R.code){attach();ready=true;render();return}}catch(e){}}
+  ready=true;render()}
+function attach(){
+  unsubs.forEach(function(u){try{u()}catch(e){}});unsubs=[];room=null;seats={};results={};lastRound=-1;
+  unsubs.push(D.doc(base()).onSnapshot(function(s){room=s.exists?s.data():null;if(room&&room.round!==lastRound){lastRound=room.round;draft=0;picks={}}render()},fail));
+  unsubs.push(D.collection(base()+'/seats').onSnapshot(function(q){seats={};q.docs.forEach(function(d){seats[d.id]=d.data()});render()},fail));
+  unsubs.push(D.collection(base()+'/results').onSnapshot(function(q){results={};q.docs.forEach(function(d){results[d.id]=d.data()});render()},fail))}
+function leave(){unsubs.forEach(function(u){try{u()}catch(e){}});unsubs=[];ls('bj_sess',null);R={role:'',code:'',name:''};room=null;mode='home';err='';render()}
+function go(m){mode=m;err='';render()}
+async function createRoom(){
+  var nm=document.getElementById('nm').value.trim()||'Dealer';startC=+document.getElementById('sc').value;dealerC=+document.getElementById('dc').value;
+  busy=true;err='';render();
+  try{var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',code='',ok=false;
+    for(var t=0;t<6&&!ok;t++){code='';for(var i=0;i<4;i++)code+=A[Math.floor(Math.random()*A.length)];var s=await D.doc('rooms/'+code).get();ok=!s.exists}
+    await D.doc('rooms/'+code).set({phase:'bet',round:1,startChips:startC,dealerChips:dealerC,hostName:nm,hostId:me,created:Date.now()});
+    R={role:'host',code:code,name:nm};ls('bj_sess',JSON.stringify(R));attach()}
+  catch(e){err='Gagal membuat room: '+((e&&e.message)||'')}
+  busy=false;render()}
+async function joinRoom(){
+  var code=document.getElementById('cd').value.trim().toUpperCase(),nm=document.getElementById('nm').value.trim();
+  if(code.length<4||!nm){err='Isi kode room dan nama dulu.';render();return}
+  busy=true;err='';render();
+  try{var s=await D.doc('rooms/'+code).get();
+    if(!s.exists){err='Room tidak ditemukan. Cek lagi kodenya.'}
+    else{var r=s.data();await D.doc('rooms/'+code+'/seats/'+me).set({name:nm,bet:0,round:r.round,at:Date.now()});R={role:'player',code:code,name:nm};ls('bj_sess',JSON.stringify(R));attach()}}
+  catch(e){err='Gagal masuk room: '+((e&&e.message)||'')}
+  busy=false;render()}
+function addBet(a){if(draft+a<=chipsOf(me))draft+=a;render()}
+function setDraft(v){draft=v==='all'?chipsOf(me):0;render()}
+async function sendBet(){try{err='';await D.doc(base()+'/seats/'+me).set({name:R.name,bet:draft,round:room.round,at:Date.now()})}catch(e){fail(e)}}
+async function lockBets(){try{await D.doc(base()).update({phase:'play'})}catch(e){fail(e)}}
+function pickOut(i,k){picks[SI[i]]=KEYS[k];render()}
+function active(){return Object.keys(seats).filter(function(id){var s=seats[id];return s.round===room.round&&s.bet>0})}
+async function settle(){
+  try{var tot=0,ps=[];active().forEach(function(id){var s=seats[id],o=picks[id],d=dl(s.bet,o);tot+=d;ps.push(D.doc(base()+'/results/'+id).set({chips:chipsOf(id)+d,delta:d,outcome:o,bet:s.bet,round:room.round}))});
+    await Promise.all(ps);await D.doc(base()).update({phase:'result',dealerChips:room.dealerChips-tot})}catch(e){fail(e)}}
+async function nextRound(){try{await D.doc(base()).update({phase:'bet',round:room.round+1})}catch(e){fail(e)}}
+async function give(i){var id=SI[i];try{await D.doc(base()+'/results/'+id).set({chips:chipsOf(id)+500,delta:0,outcome:'',bet:0,round:results[id]?results[id].round:0})}catch(e){fail(e)}}
+async function dtop(){try{await D.doc(base()).update({dealerChips:room.dealerChips+1000})}catch(e){fail(e)}}
+function errH(){return err?'<div class="err">'+esc(err)+'</div>':''}
+function render(){
+  var a=document.getElementById('app'),h='';
+  if(!ready){return}
+  if(!D){a.innerHTML='<h1>Meja blackjack online</h1><p>Fitur room online belum aktif di halaman ini. Buka lewat link yang dibagikan pemilik halaman dan pastikan sudah masuk ke akun Claude.</p>';return}
+  if(!R.code){
+    if(mode==='home'){h='<h1>Meja blackjack online</h1><p>Dealer membuat room, pemain masuk dengan kode. Kartu tetap dimainkan langsung di meja.</p><button class="go" onclick="go(\'host\')">Saya dealer, buat room</button><button class="go" onclick="go(\'join\')">Saya pemain, gabung room</button>'}
+    else if(mode==='host'){h='<h1>Buat room</h1><div class="form"><div><label for="nm">Nama dealer</label><input id="nm" placeholder="Dealer"></div><div><label for="sc">Chip tiap pemain</label><select id="sc">'+opts([500,1000,2000,5000],startC)+'</select></div><div><label for="dc">Chip dealer</label><select id="dc">'+opts([5000,10000,20000,50000,100000],dealerC)+'</select></div></div>'+errH()+'<button class="go" onclick="createRoom()"'+(busy?' disabled':'')+'>Buat room</button><button class="link" onclick="go(\'home\')">Kembali</button>'}
+    else{h='<h1>Gabung room</h1><div class="form"><div><label for="cd">Kode room dari dealer</label><input id="cd" class="codein" maxlength="4" autocomplete="off"></div><div><label for="nm">Nama kamu</label><input id="nm"></div></div>'+errH()+'<button class="go" onclick="joinRoom()"'+(busy?' disabled':'')+'>Gabung</button><button class="link" onclick="go(\'home\')">Kembali</button>'}
+    a.innerHTML=h;return}
+  if(!room){a.innerHTML='<p>'+(err?esc(err):'Membuka room '+esc(R.code)+'...')+'</p><button class="link" onclick="leave()">Keluar</button>';return}
+  var ph=room.phase;
+  if(R.role==='host'){
+    SI=Object.keys(seats);
+    h+='<div class="tray"><div><small>Kode room, bagikan ke pemain</small><span class="code">'+esc(R.code)+'</span></div><div style="text-align:right"><small>Chip dealer</small><span class="amt">'+room.dealerChips+'</span></div></div>';
+    h+='<div class="status">Ronde '+room.round+': '+(ph==='bet'?'pemain sedang memasang taruhan.':ph==='play'?'taruhan dikunci, tandai hasil tiap pemain.':'hasil sudah dikirim ke pemain.')+'</div>';
+    h+=errH();
+    if(!SI.length)h+='<p>Belum ada pemain. Minta temanmu masuk dengan kode di atas.</p>';
+    SI.forEach(function(id,i){var s=seats[id],bet=s.round===room.round?s.bet:0,r=results[id],pk=picks[id];
+      h+='<div class="row"><div class="spot">'+(bet?piles(bet):'<span class="hint">belum</span>')+'</div><div><div class="name">'+esc(s.name)+'</div><div class="bal">Chip <b>'+chipsOf(id)+'</b>'+(bet?' &nbsp;Taruhan <b>'+bet+'</b>':'')+'</div>';
+      if(ph==='result'&&r&&r.round===room.round&&bet)h+='<div class="bal">'+OUT[r.outcome]+' <span class="'+(r.delta>0?'up':r.delta<0?'dn':'')+'">'+(r.delta>=0?'+':'')+r.delta+'</span></div>';
+      if(ph==='bet')h+='<button class="link" onclick="give('+i+')">Tambah 500</button>';
+      h+='</div>';
+      if(ph==='play'&&bet)h+='<div class="seg">'+LBL.map(function(l,k){return '<button class="ghost'+(pk===KEYS[k]?' on':'')+'" onclick="pickOut('+i+','+k+')">'+l+'</button>'}).join('')+'</div>';
+      h+='</div>'});
+    h+='<p style="margin-top:24px"><button class="link" onclick="dtop()">Tambah chip dealer 1.000</button> &nbsp; <button class="link" onclick="leave()">Keluar dari room</button></p>';
+    var act=active();
+    h+='<div class="bar"><div>';
+    if(ph==='bet')h+='<button class="go" onclick="lockBets()"'+(act.length?'':' disabled')+'>Tutup taruhan, mulai main kartu</button>';
+    else if(ph==='play')h+='<button class="go" onclick="settle()"'+(act.every(function(id){return picks[id]})?'':' disabled')+'>Kirim hasil ke semua pemain</button>';
+    else h+='<button class="go" onclick="nextRound()">Ronde baru</button>';
+    h+='<div class="bal" style="margin-bottom:4px">Blackjack dibayar 3 banding 2.</div></div></div>';
+    a.innerHTML=h;return}
+  var mine=seats[me],sent=mine&&mine.round===room.round?mine.bet:null,chips=chipsOf(me),r=results[me];
+  h+='<div class="tray"><div><small>Room</small><span class="code">'+esc(R.code)+'</span></div><div style="text-align:right"><small>Chip kamu</small><span class="amt">'+chips+'</span></div></div>';
+  h+=errH();
+  h+='<div class="center"><div class="name">'+esc(R.name)+'</div>';
+  if(ph==='bet'){
+    h+='<div class="spot">'+(draft?piles(draft):'<span class="hint">pilih chip di bawah</span>')+'</div><div class="bal">Taruhan <b>'+draft+'</b>'+(sent!==null?' &nbsp;Terkirim <b>'+sent+'</b>':'')+'</div>';
+    if(chips<=0)h+='<div class="status">Chip habis. Minta dealer menambah chip.</div>'}
+  else{
+    var bet=sent||0;
+    h+='<div class="spot">'+(bet?piles(bet):'<span class="hint">tidak ikut</span>')+'</div>';
+    if(ph==='play')h+='<div class="status">'+(bet?'Taruhan '+bet+' dikunci. Tunggu hasil dari dealer.':'Kamu tidak memasang taruhan ronde ini.')+'</div>';
+    else if(bet&&r&&r.round===room.round)h+='<div class="status"><b>'+OUT[r.outcome]+'</b> &nbsp;<span class="'+(r.delta>0?'up':r.delta<0?'dn':'')+'">'+(r.delta>=0?'+':'')+r.delta+'</span><br>Chip kamu sekarang '+r.chips+'</div>';
+    else h+='<div class="status">Ronde ini selesai. Tunggu ronde baru.</div>'}
+  h+='</div><h2>Di meja</h2>';
+  Object.keys(seats).forEach(function(id){h+='<div class="bal"><b>'+esc(seats[id].name)+(id===me?' (kamu)':'')+'</b> &nbsp;'+chipsOf(id)+' chip</div>'});
+  h+='<p style="margin-top:24px"><button class="link" onclick="leave()">Keluar dari room</button></p>';
+  if(ph==='bet'){h+='<div class="bar"><div><div class="rack">'+[10,50,100,500].map(function(v){return '<button class="chip d'+v+'" aria-label="Tambah '+v+'" onclick="addBet('+v+')">'+v+'</button>'}).join('')+'<span class="sp"></span><button class="ghost" onclick="setDraft(0)">Hapus</button><button class="ghost" onclick="setDraft(\'all\')">All-in</button></div><button class="go" onclick="sendBet()"'+(chips<=0||(draft===0&&sent===null)?' disabled':'')+'>Kirim taruhan ke dealer</button></div></div>'}
+  a.innerHTML=h}
+init();
+</script></body></html>
